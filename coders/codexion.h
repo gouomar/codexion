@@ -1,7 +1,6 @@
 #ifndef CODEXION_H
 # define CODEXION_H
 
-
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -13,7 +12,7 @@ typedef struct s_dongle	t_dongle;
 typedef long long		t_ll;
 typedef pthread_mutex_t	t_mutex;
 typedef pthread_cond_t	t_cond;
-typedef struct s_waiter t_waiter;
+typedef struct s_waiter	t_waiter;
 
 typedef struct s_rules
 {
@@ -29,7 +28,7 @@ typedef struct s_rules
 	t_mutex		print_mutex;
 	int			simulation_over;
 	t_mutex		stop_mutex;
-}t_rules;
+}	t_rules;
 
 typedef struct s_coder
 {
@@ -41,13 +40,13 @@ typedef struct s_coder
 	int			compiles_done;
 	t_mutex		state_mutex;
 	t_rules		*rules;
-}t_coder;
+}	t_coder;
 
 typedef struct s_monitor_ctx
 {
 	t_coder	*coders;
 	t_rules	*rules;
-}t_monitor_ctx;
+}	t_monitor_ctx;
 
 struct s_dongle
 {
@@ -61,10 +60,9 @@ struct s_dongle
 
 typedef struct s_waiter
 {
-	int		coder_id; // who is wating (index in the mini-heap)
-	t_ll	priority; // arrival_time (FIFO) or deadline (EDF)
-}t_waiter;
-
+	int		coder_id;
+	t_ll	priority;
+}	t_waiter;
 
 int				parsing(int argc, char **argv, t_rules *rules);
 void			*coder_routine(void *arg);
@@ -83,5 +81,8 @@ void			set_end_program(t_rules *rules, int value);
 void			*monitor_routine(void *arg);
 void			heap_insert(t_dongle *d, int coder_id, t_ll priority);
 void			heap_pop(t_dongle *d);
+
+int				take_dongle(t_coder *coder, t_dongle *dongle);
+void			release_dongle(t_dongle *dongle, int coldown);
 
 #endif

@@ -1,23 +1,5 @@
 #include "codexion.h"
 
-int	is_end_program(t_rules *rules)
-{
-	int	res;
-
-	pthread_mutex_lock(&rules->stop_mutex);
-	res = rules->simulation_over;
-	pthread_mutex_unlock(&rules->stop_mutex);
-	return (res);
-}
-
-void	set_end_program(t_rules *rules, int value)
-{
-	pthread_mutex_lock(&rules->stop_mutex);
-	if (!rules->simulation_over)
-		rules->simulation_over = value;
-	pthread_mutex_unlock(&rules->stop_mutex);
-}
-
 static int	coder_burned_out(t_monitor_ctx *ctx, int i, t_ll current_time)
 {
 	t_ll	last_compile;
@@ -60,6 +42,20 @@ static int	all_finished_compiling(t_monitor_ctx *ctx)
 	return (0);
 }
 
+static void	wake_up_coders(t_monitor_ctx *ctx)
+{
+	int	i;
+
+	i = 0;
+	while (i < ctx->rules->number_of_coders)
+	{
+		pthread_mutex_lock(&ctx->coders[i].left_dongle->mutex);
+		pthread_cond_broadcast(&ctx->coders[i].left_dongle->cond);
+		pthread_mutex_unlock(&ctx->coders[i].left_dongle->mutex);
+		i++;
+	}
+}
+
 void	*monitor_routine(void *arg)
 {
 	t_monitor_ctx	*ctx;
@@ -79,15 +75,7 @@ void	*monitor_routine(void *arg)
 			break ;
 		usleep(1000);
 	}
-	// Broadcast to all dongles to wake up sleeping coders
-	i = 0;
-	while (i < ctx->rules->number_of_coders)
-	{
-		pthread_mutex_lock(&ctx->coders[i].left_dongle->mutex);
-		pthread_cond_broadcast(&ctx->coders[i].left_dongle->cond);
-		pthread_mutex_unlock(&ctx->coders[i].left_dongle->mutex);
-		i++;
-	}
+	wake_up_coders(ctx);
 	free(ctx);
 	return (NULL);
 }

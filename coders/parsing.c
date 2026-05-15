@@ -1,8 +1,8 @@
 #include "codexion.h"
 
-static int is_valid_number(char *str)
+static int	is_valid_number(char *str)
 {
-	int i;
+	int	i;
 
 	if (!str || !str[0])
 		return (0);
@@ -20,13 +20,12 @@ static int is_valid_number(char *str)
 	return (1);
 }
 
-int parsing(int argc, char **argv, t_rules *rules)
+int	parsing(int argc, char **argv, t_rules *rules)
 {
-	int i;
+	int	i;
 
 	if (argc != 9)
 		return (0);
-
 	i = 1;
 	while (i <= 7)
 	{
@@ -34,10 +33,8 @@ int parsing(int argc, char **argv, t_rules *rules)
 			return (0);
 		i++;
 	}
-
 	if (strcmp(argv[8], "fifo") != 0 && strcmp(argv[8], "edf") != 0)
 		return (0);
-
 	rules->number_of_coders = atoi(argv[1]);
 	rules->time_to_burnout = atoi(argv[2]);
 	rules->time_to_compile = atoi(argv[3]);
