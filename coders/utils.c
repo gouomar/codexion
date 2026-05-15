@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/15 14:32:22 by gomar             #+#    #+#             */
+/*   Updated: 2026/05/15 14:32:30 by gomar            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 long long	get_time_ms(void)
@@ -25,6 +37,11 @@ void	safe_print(t_coder *codres, char *status)
 	long long	current_time;
 
 	pthread_mutex_lock(&codres->rules->print_mutex);
+	if (is_end_program(codres->rules) && strcmp(status, "burned out") != 0)
+	{
+		pthread_mutex_unlock(&codres->rules->print_mutex);
+		return ;
+	}
 	current_time = get_time_ms() - codres->rules->start_time;
 	printf("%lld %d %s\n", current_time, codres->id, status);
 	pthread_mutex_unlock(&codres->rules->print_mutex);

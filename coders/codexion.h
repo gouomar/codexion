@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   codexion.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/15 14:33:24 by gomar             #+#    #+#             */
+/*   Updated: 2026/05/15 16:59:33 by gomar            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CODEXION_H
 # define CODEXION_H
 
-# include <pthread.h>
 # include <stdio.h>
+# include <pthread.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>

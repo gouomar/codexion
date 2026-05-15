@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/15 14:32:16 by gomar             #+#    #+#             */
+/*   Updated: 2026/05/15 14:32:18 by gomar            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 static void	dongle_order(t_coder *coder, t_dongle **f, t_dongle **s)
@@ -21,6 +33,13 @@ static int	acquire_pair(t_coder *coder, t_dongle *first, t_dongle *second)
 	rules = coder->rules;
 	if (!take_dongle(coder, first))
 		return (0);
+	if (first == second)
+	{
+		while (!is_end_program(rules))
+			usleep(500);
+		release_dongle(first, rules->dongle_cooldown);
+		return (0);
+	}
 	if (!take_dongle(coder, second))
 	{
 		release_dongle(first, rules->dongle_cooldown);
