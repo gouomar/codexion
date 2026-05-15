@@ -69,7 +69,6 @@ int	main(int argc, char **argv)
 	if (init_mutex(dongles, rules.number_of_coders))
 		return (destroy_state_mutexes(coders, rules.number_of_coders),
 			free(coders), free(dongles), 1);
-	else return 0;
 	assign_dongles(coders, dongles, rules.number_of_coders);
 	if (!create_threads(coders, rules.number_of_coders)
 		|| !start_monitor(&rules, coders))

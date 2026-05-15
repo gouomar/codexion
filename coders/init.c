@@ -53,7 +53,10 @@ int	init_mutex(t_dongle *dongles, int n)
 	{
 		dongles[i].heap = malloc(sizeof(t_waiter) * n);
 		if (!dongles[i].heap)
-			return 0;
+		{
+			destroy_mutex(dongles, i);
+			return (1);
+		}
 		if (pthread_mutex_init(&dongles[i].mutex, NULL))
 		{
 			free(dongles[i].heap);
