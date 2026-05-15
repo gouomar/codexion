@@ -6,7 +6,7 @@
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:32:22 by gomar             #+#    #+#             */
-/*   Updated: 2026/05/15 14:32:30 by gomar            ###   ########.fr       */
+/*   Updated: 2026/05/15 20:19:32 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,14 @@ void	assign_dongles(t_coder *coders, t_dongle *dongles, int nb_coders)
 		coders[i].right_dongle = &dongles[(i + 1) % nb_coders];
 		i++;
 	}
+}
+
+int	sleep_or_stop(t_coder *coder, int duration_ms)
+{
+	long long	end;
+
+	end = get_time_ms() + duration_ms;
+	while (!is_end_program(coder->rules) && get_time_ms() < end)
+		usleep(500);
+	return (!is_end_program(coder->rules));
 }

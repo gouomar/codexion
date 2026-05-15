@@ -6,7 +6,7 @@
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:30:48 by gomar             #+#    #+#             */
-/*   Updated: 2026/05/15 14:30:50 by gomar            ###   ########.fr       */
+/*   Updated: 2026/05/15 19:57:50 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	main(int argc, char **argv)
 	t_dongle	*dongles;
 
 	if (!parsing(argc, argv, &rules) || !init_simulation(&rules))
+		return (write(2, "Error: Invalid Arguments\n", 25), 1);
+	if (rules.number_of_compiles_required == 0)
 		return (write(2, "Error: Invalid Arguments\n", 25), 1);
 	coders = malloc(sizeof(t_coder) * rules.number_of_coders);
 	dongles = malloc(sizeof(t_dongle) * rules.number_of_coders);

@@ -6,7 +6,7 @@
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:33:24 by gomar             #+#    #+#             */
-/*   Updated: 2026/05/15 16:59:33 by gomar            ###   ########.fr       */
+/*   Updated: 2026/05/15 20:19:49 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,5 @@ void			heap_pop(t_dongle *d);
 int				take_dongle(t_coder *coder, t_dongle *dongle);
 void			release_dongle(t_dongle *dongle, int coldown);
 
+int				sleep_or_stop(t_coder *coder, int duration_ms);
 #endif

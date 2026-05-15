@@ -35,21 +35,33 @@ static int	all_finished_compiling(t_monitor_ctx *ctx)
 
 	if (ctx->rules->number_of_compiles_required == -1)
 		return (0);
-	i = 0;
+	if (ctx->rules->number_of_compiles_required == 0)
+		return (set_end_program(ctx->rules, 1), 1);
+	i = -1;
 	finished = 0;
-	while (i < ctx->rules->number_of_coders)
+	while (++i < ctx->rules->number_of_coders)
 	{
 		pthread_mutex_lock(&ctx->coders[i].state_mutex);
 		if (ctx->coders[i].compiles_done
 			>= ctx->rules->number_of_compiles_required)
 			finished++;
 		pthread_mutex_unlock(&ctx->coders[i].state_mutex);
-		i++;
 	}
 	if (finished == ctx->rules->number_of_coders)
+		return (set_end_program(ctx->rules, 1), 1);
+	return (0);
+}
+
+static int	should_stop_from_burnout(t_monitor_ctx *ctx)
+{
+	int	i;
+
+	i = 0;
+	while (i < ctx->rules->number_of_coders)
 	{
-		set_end_program(ctx->rules, 1);
-		return (1);
+		if (coder_burned_out(ctx, i, get_time_ms()))
+			return (1);
+		i++;
 	}
 	return (0);
 }
@@ -71,18 +83,12 @@ static void	wake_up_coders(t_monitor_ctx *ctx)
 void	*monitor_routine(void *arg)
 {
 	t_monitor_ctx	*ctx;
-	int				i;
 
 	ctx = (t_monitor_ctx *)arg;
 	while (!is_end_program(ctx->rules))
 	{
-		i = 0;
-		while (i < ctx->rules->number_of_coders)
-		{
-			if (coder_burned_out(ctx, i, get_time_ms()))
-				break ;
-			i++;
-		}
+		if (should_stop_from_burnout(ctx))
+			break ;
 		if (all_finished_compiling(ctx))
 			break ;
 		usleep(1000);
