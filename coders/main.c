@@ -9,6 +9,7 @@ int	init_simulation(t_rules *rules)
 		pthread_mutex_destroy(&rules->print_mutex);
 		return (0);
 	}
+	rules->simulation_over = 0;
 	rules->start_time = get_time_ms();
 	return (1);
 }
