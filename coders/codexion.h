@@ -70,7 +70,7 @@ int				parsing(int argc, char **argv, t_rules *rules);
 void			*coder_routine(void *arg);
 int				create_threads(t_coder *coders, int n);
 void			join_threads(t_coder *coders, int n);
-void	destroy_state_mutexes(t_coder *coders, t_dongle *dongles, int n);
+void			destroy_state_mutexes(t_coder *coders, int n);
 void			cleanup_all(t_rules *rules, t_coder *coders, t_dongle *dongles);
 int				init_mutex(t_dongle *dongles, int n);
 void			destroy_mutex(t_dongle *dongles, int n);
@@ -83,6 +83,5 @@ void			set_end_program(t_rules *rules, int value);
 void			*monitor_routine(void *arg);
 void			heap_insert(t_dongle *d, int coder_id, t_ll priority);
 void			heap_pop(t_dongle *d);
-void			heap_remove_by_id(t_dongle *d, int coder_id);
 
 #endif

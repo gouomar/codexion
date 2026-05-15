@@ -79,6 +79,15 @@ void	*monitor_routine(void *arg)
 			break ;
 		usleep(1000);
 	}
+	// Broadcast to all dongles to wake up sleeping coders
+	i = 0;
+	while (i < ctx->rules->number_of_coders)
+	{
+		pthread_mutex_lock(&ctx->coders[i].left_dongle->mutex);
+		pthread_cond_broadcast(&ctx->coders[i].left_dongle->cond);
+		pthread_mutex_unlock(&ctx->coders[i].left_dongle->mutex);
+		i++;
+	}
 	free(ctx);
 	return (NULL);
 }
