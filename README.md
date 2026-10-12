@@ -154,8 +154,6 @@ A thread asleep on a lock can't track its own burnout deadline — it's asleep. 
 
 ## Numbers
 
-*Verify each of these against your actual measurements before publishing — note how the timing ones were measured.*
-
 - **Burnout precision:** deadlines caught and reported within ~2ms on average.
 - **Memory safety:** clean Valgrind teardown, `0 bytes in 0 blocks` lost.
 - **Race-condition immunity:** compiles and runs clean under ThreadSanitizer with no detected data races.
